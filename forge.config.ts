@@ -16,19 +16,20 @@ const config: ForgeConfig = {
     asar: true,
   },
   rebuildConfig: {},
-  // makers: [
-  //   new MakerSquirrel({}), new MakerZIP({}, ['darwin']), new MakerRpm({}), new MakerDeb({})
-  // ],
   makers: [
-    {
-      name: '@electron-forge/maker-rpm',
-      config: {
-        options: {
-          homepage: 'http://example.com'
-        }
-      }
-    }
+    new MakerSquirrel({}), new MakerZIP({}, ['darwin']), new MakerRpm({}), new MakerDeb({})
   ],
+  // makers: [
+  //   {
+  //     name: '@electron-forge/maker-deb',
+  //     config: {
+  //       options: {
+  //         maintainer: 'Son FE',
+  //         homepage: 'https://itel.vn'
+  //       }
+  //     }
+  //   }
+  // ],
   plugins: [
     new AutoUnpackNativesPlugin({}),
     new WebpackPlugin({
@@ -59,6 +60,7 @@ const config: ForgeConfig = {
       [FuseV1Options.OnlyLoadAppFromAsar]: true,
     }),
   ],
+  
 };
 
 export default config;

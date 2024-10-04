@@ -1,6 +1,7 @@
 import { BrowserWindow } from "electron";
 import javascriptBarcodeReader from "javascript-barcode-reader";
 import NodeWebcam, { WebcamOptions } from "node-webcam";
+import { IBarcode } from "../types/barcode";
 
 const opts: WebcamOptions = {
     width: 1280,
@@ -10,29 +11,52 @@ const opts: WebcamOptions = {
     delay: 0,
     saveShots: true,
     output: "jpeg",
-    device: false,
     callbackReturn: "location",
-    verbose: false
+    verbose: false,
 
 };
 
-const webcam = NodeWebcam.create(opts)
+const webcam = NodeWebcam.create({})
 
 function captureCamera(mainWindow: BrowserWindow) {
-    webcam.capture("src/server/bar_code", function (err: Error, data: string) {
-        console.log("data", data)
-        javascriptBarcodeReader({
-            image: data,
-            barcode: "code-128",
-        })
-            .then(code => {
-                console.log("code:", code)
-                mainWindow.webContents.send("getBarCode", code)
+    webcam.list(function (list) {
+        const anotherCam = NodeWebcam.create({ device: false, ...opts, });
+        // const anotherCam = NodeWebcam.create({ device: "/dev/video1", ...opts, });
+        anotherCam.capture("bar_code", function (err: Error, data: string) {
+            if (err) {
+                const barcode: IBarcode = {
+                    status: false,
+                    err: {
+                        code: err.name,
+                        message: err.message
+                    }
+                }
+                mainWindow.webContents.send("getBarCode", barcode)
+                return;
+            }
+
+            javascriptBarcodeReader({
+                image: data,
+                barcode: "code-128",
             })
-            .catch(err => {
-                console.log("err:", err?.message)
-                mainWindow.webContents.send("getBarCode", err?.message)
-            })
+                .then(code => {
+                    const barcode: IBarcode = {
+                        status: true,
+                        barcode: code
+                    }
+                    mainWindow.webContents.send("getBarCode", barcode)
+                })
+                .catch(err => {
+                    const barcode: IBarcode = {
+                        status: false,
+                        err: {
+                            code: err.name,
+                            message: err.message
+                        }
+                    }
+                    mainWindow.webContents.send("getBarCode", barcode)
+                })
+        });
     });
 }
 
