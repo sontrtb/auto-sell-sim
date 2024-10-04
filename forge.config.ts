@@ -16,8 +16,18 @@ const config: ForgeConfig = {
     asar: true,
   },
   rebuildConfig: {},
+  // makers: [
+  //   new MakerSquirrel({}), new MakerZIP({}, ['darwin']), new MakerRpm({}), new MakerDeb({})
+  // ],
   makers: [
-    new MakerSquirrel({}), new MakerZIP({}, ['darwin']), new MakerRpm({}), new MakerDeb({})
+    {
+      name: '@electron-forge/maker-rpm',
+      config: {
+        options: {
+          homepage: 'http://example.com'
+        }
+      }
+    }
   ],
   plugins: [
     new AutoUnpackNativesPlugin({}),
