@@ -16,20 +16,20 @@ const config: ForgeConfig = {
     asar: true,
   },
   rebuildConfig: {},
-  makers: [
-    new MakerSquirrel({}), new MakerZIP({}, ['darwin']), new MakerRpm({}), new MakerDeb({})
-  ],
   // makers: [
-  //   {
-  //     name: '@electron-forge/maker-deb',
-  //     config: {
-  //       options: {
-  //         maintainer: 'Son FE',
-  //         homepage: 'https://itel.vn'
-  //       }
-  //     }
-  //   }
+  //   new MakerSquirrel({}), new MakerZIP({}, ['darwin']), new MakerRpm({}), new MakerDeb({})
   // ],
+  makers: [
+    {
+      name: '@electron-forge/maker-deb',
+      config: {
+        options: {
+          maintainer: 'Son FE',
+          homepage: 'https://itel.vn'
+        }
+      }
+    }
+  ],
   plugins: [
     new AutoUnpackNativesPlugin({}),
     new WebpackPlugin({

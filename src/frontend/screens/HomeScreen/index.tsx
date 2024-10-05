@@ -1,9 +1,18 @@
+import "./index.css";
 import React, { useEffect, useState } from "react";
-import Button from "../../components/Button"
+import Button, { ETypeButton } from "../../components/Button"
 import { IBarcode } from "../../../types/barcode";
+import Webcam from "react-webcam";
+
+const videoConstraints = {
+    width: 1280,
+    height: 720,
+    facingMode: "user"
+};
 
 function HomeScreen() {
     const [barcode, setBarCode] = useState<IBarcode>();
+    const [imageCapture, setImageCapture] = useState();
 
     useEffect(() => {
         window.myAPI.getBarCode((e, value) => {
@@ -15,11 +24,33 @@ function HomeScreen() {
     const handleStarBuySim = () => {
         window.myAPI.captureCamera()
     }
+
+    const webcamRef = React.useRef(null);
+    const capture = React.useCallback(
+        () => {
+            const imageSrc = webcamRef.current.getScreenshot();
+            console.log("imageSrc", imageSrc)
+            setImageCapture(imageSrc)
+        },
+        [webcamRef]
+    );
+
     return (
         <div>
             <h1>Trang chủ</h1>
-            <Button title="Mua sim" onClick={handleStarBuySim}/>
+            <Button onClick={handleStarBuySim} typeButton={ETypeButton.PRIMARY}>Quét Barcode</Button>
             <h2>{barcode?.status ? barcode?.barcode : barcode?.err?.message}</h2>
+
+            <br />
+            <Webcam
+                audio={false}
+                ref={webcamRef}
+                screenshotFormat="image/jpeg"
+                width="100%"
+                videoConstraints={videoConstraints}
+            />
+            <Button onClick={capture}>Chụp ảnh</Button>
+            <img src={imageCapture} className="img"/>
         </div>
     )
 }
