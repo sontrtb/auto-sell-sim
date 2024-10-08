@@ -42,7 +42,7 @@ function HomeScreen() {
             <h2>{barcode?.status ? barcode?.barcode : barcode?.err?.message}</h2>
 
             <br />
-            <Webcam
+            {/* <Webcam
                 audio={false}
                 ref={webcamRef}
                 screenshotFormat="image/jpeg"
@@ -50,7 +50,7 @@ function HomeScreen() {
                 videoConstraints={videoConstraints}
             />
             <Button onClick={capture}>Chụp ảnh</Button>
-            <img src={imageCapture} className="img"/>
+            <img src={imageCapture} className="img"/> */}
         </div>
     )
 }

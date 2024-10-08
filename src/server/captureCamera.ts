@@ -20,8 +20,8 @@ const webcam = NodeWebcam.create({})
 
 function captureCamera(mainWindow: BrowserWindow) {
     webcam.list(function (list) {
-        // const anotherCam = NodeWebcam.create({ device: false, ...opts, });
-        const anotherCam = NodeWebcam.create({  ...opts, device: "/dev/video1"});
+        const anotherCam = NodeWebcam.create({ device: false, ...opts, });
+        // const anotherCam = NodeWebcam.create({  ...opts, device: "/dev/video1"});
         anotherCam.capture("bar_code", function (err: Error, data: string) {
             if (err) {
                 const barcode: IBarcode = {
