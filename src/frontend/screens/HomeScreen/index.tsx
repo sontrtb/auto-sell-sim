@@ -4,6 +4,7 @@ import Button, { ETypeButton } from "../../components/Button"
 import { IBarcode } from "../../../types/barcode";
 import Webcam from "react-webcam";
 
+
 const videoConstraints = {
     width: 1280,
     height: 720,
@@ -35,6 +36,12 @@ function HomeScreen() {
         [webcamRef]
     );
 
+    const handleBlinkLed = () => {
+        console.log("sd")
+    }
+
+    
+
     return (
         <div>
             <h1>Trang chủ</h1>
@@ -42,7 +49,10 @@ function HomeScreen() {
             <h2>{barcode?.status ? barcode?.barcode : barcode?.err?.message}</h2>
 
             <br />
-            {/* <Webcam
+            <Button onClick={handleBlinkLed} typeButton={ETypeButton.PRIMARY}>Blink Led 21</Button>
+
+            <br />
+            <Webcam
                 audio={false}
                 ref={webcamRef}
                 screenshotFormat="image/jpeg"
@@ -50,7 +60,7 @@ function HomeScreen() {
                 videoConstraints={videoConstraints}
             />
             <Button onClick={capture}>Chụp ảnh</Button>
-            <img src={imageCapture} className="img"/> */}
+            <img src={imageCapture} className="img"/>
         </div>
     )
 }
